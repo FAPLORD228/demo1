@@ -20,16 +20,20 @@ public class UserDaoJDBCImpl implements UserDao {
         try (Connection connection = Util.getConnection();) {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.executeUpdate();
-            try {
-                connection.commit();
-            } catch (SQLException e) {
-                System.out.println("я не прав");
-                connection.rollback();
-            }
+            processCommit(connection, "я не прав");
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+    }
+
+    private static void processCommit(Connection connection, String я_не_прав) throws SQLException {
+        try {
+            connection.commit();
+        } catch (SQLException e) {
+            System.out.println(я_не_прав);
+            connection.rollback();
+        }
     }
 
     public void dropUsersTable() {
@@ -38,12 +42,7 @@ public class UserDaoJDBCImpl implements UserDao {
         try (Connection connection = Util.getConnection();) {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.executeUpdate();
-            try {
-                connection.commit();
-            } catch (SQLException e) {
-                System.out.println("Я ошибся");
-                connection.rollback();
-            }
+            processCommit(connection, "Я ошибся");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -58,12 +57,7 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.setString(2, lastName);
             preparedStatement.setByte(3, age);
             preparedStatement.executeUpdate();
-            try {
-                connection.commit();
-            } catch (SQLException e) {
-                System.out.println("исправь");
-                connection.rollback();
-            }
+            processCommit(connection, "исправь");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -76,12 +70,7 @@ public class UserDaoJDBCImpl implements UserDao {
         try (Connection connection = Util.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
-            try {
-                connection.commit();
-            } catch (SQLException e) {
-                System.out.println("Переделай пожалуйста");
-                connection.rollback();
-            }
+            processCommit(connection, "Переделай пожалуйста");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -117,12 +106,7 @@ public class UserDaoJDBCImpl implements UserDao {
         try (Connection connection = Util.getConnection();) {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.executeUpdate();
-            try {
-                connection.commit();
-            } catch (SQLException e) {
-                System.out.println("Я не прав");
-                connection.rollback();
-            }
+            processCommit(connection, "Я не прав");
         } catch (SQLException e) {
             e.printStackTrace();
         }
